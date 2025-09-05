@@ -23,3 +23,9 @@
 .float-right {
   margin-left: auto;
 }
+.border-bottom {
+  border-bottom: 1px solid #e0e0e0;
+}
+.router-link-exact-active {
+  color: #42b983;
+}

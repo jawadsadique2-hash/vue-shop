@@ -1,6 +1,8 @@
 <template>
-  <HeaderComponent />
-  <RouterView />
+  <div class="container">
+    <HeaderComponent />
+    <RouterView />
+  </div>
 </template>
 <script setup>
 import HeaderComponent from '@/components/HeaderComponent.vue'

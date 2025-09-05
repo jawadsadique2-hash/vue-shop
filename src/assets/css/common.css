@@ -1,0 +1,52 @@
+.container {
+  width: 100%;
+  max-width: 1200px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 20px;
+  padding-right: 20px;
+}
+.button-primary {
+  background-color: #42b983;
+  color: white;
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+.button-secondary {
+  background-color: transparent;
+  border: 1px solid #42b983;
+  color: #42b983;
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  border-radius: 5px;
+}
+.button-secondary:hover {
+  text-decoration: none;
+}
+
+.button-primary:hover {
+  text-decoration: none;
+}
+.flex {
+  display: flex;
+}
+.gap-5 {
+  gap: 20px;
+}
+.card {
+  border: 1px solid #e0e0e0;
+  cursor: pointer;
+  border-radius: 5px;
+  max-width: 250px;
+  text-align: center;
+}
+.mb-5 {
+  margin-bottom: 20px;
+}
+

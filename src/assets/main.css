@@ -1,5 +1,6 @@
-@import "tailwindcss";
-@import "flowbite-vue/index.css";
+@import 'tailwindcss';
+/* if using Flowbite library: */
+@import 'flowbite/dist/flowbite.css';
+/* or using themes / plugin directives: */
 @plugin "flowbite/plugin";
-@source "../../../node_modules/flowbite-vue";
-
+@source "node_modules/flowbite";

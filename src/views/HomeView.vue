@@ -21,16 +21,23 @@ import { useProductStore } from '@/stores/product'
 import ProductCard from '@/components/ProductCard.vue'
 import { FwbSelect } from 'flowbite-vue'
 import { useCategoryStore } from '@/stores/category'
-import { ref } from 'vue'
-import { onMounted } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 
 const categoryStore = useCategoryStore()
 const productStore = useProductStore()
 
-const categories = ref([])
 const products = ref([])
 const filteredProducts = ref([])
 const selectedCategory = ref('')
+
+const categories = computed(() => {
+  return categoryStore.categories.map((cat) => {
+    return {
+      ...cat,
+      value: cat.id,
+    }
+  })
+})
 
 const onCategoryChange = () => {
   filteredProducts.value = products.value.filter((product) => {
@@ -38,13 +45,8 @@ const onCategoryChange = () => {
   })
 }
 
-onMounted(() => {
-  categories.value = categoryStore.categories.map((category) => {
-    return {
-      ...category,
-      value: category.id,
-    }
-  })
+onMounted(async () => {
+  await categoryStore.fetchAllCategories()
   products.value = productStore.products
   filteredProducts.value = products.value
 })

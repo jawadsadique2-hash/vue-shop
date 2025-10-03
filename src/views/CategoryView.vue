@@ -18,6 +18,7 @@
 </template>
 
 <script setup>
+import { onMounted } from 'vue'
 import { FwbCard } from 'flowbite-vue'
 import { useRouter } from 'vue-router'
 import { useCategoryStore } from '@/stores/category'
@@ -27,6 +28,10 @@ const categoryStore = useCategoryStore()
 const router = useRouter()
 
 const onCategoryNameClick = async (category) => {
-  router.push({ name: 'categoryDetail', query: { slug: category.id } })
+  router.push({ name: 'categoryDetail', query: { slug: category.slug } })
 }
+
+onMounted(async () => {
+  await categoryStore.fetchAllCategories()
+})
 </script>

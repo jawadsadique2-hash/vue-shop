@@ -41,12 +41,13 @@ const categories = computed(() => {
 
 const onCategoryChange = () => {
   filteredProducts.value = products.value.filter((product) => {
-    return product.category_id === selectedCategory.value
+    return product.category === selectedCategory.value
   })
 }
 
 onMounted(async () => {
   await categoryStore.fetchAllCategories()
+  await productStore.fetchAllProduct()
   products.value = productStore.products
   filteredProducts.value = products.value
 })

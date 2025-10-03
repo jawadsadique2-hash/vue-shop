@@ -29,12 +29,8 @@ export async function deleteProduct(product) {
   return data
 }
 
-export async function getProductBySlug(product) {
-  const { data, error } = await supabase
-    .from(PRODUCT_TABLE)
-    .select('*')
-    .eq('slug', product.slug)
-    .single()
+export async function getProductDetailBySlug(slug) {
+  const { data, error } = await supabase.from(PRODUCT_TABLE).select('*').eq('slug', slug).single()
 
   if (error) throw error
   return data

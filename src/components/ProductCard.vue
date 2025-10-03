@@ -1,17 +1,23 @@
 <template>
-  <fwb-card class="!max-w-full cursor-pointer">
+  <fwb-card class="!max-w-full cursor-pointer h-full">
     <div class="grid grid-cols-12 gap-4 items-center">
       <div class="col-span-12 md:col-span-4">
-        <img :src="product?.image" alt="product image" class="w-full h-[300px] object-cover" />
+        <img
+          :src="product?.images?.[0]"
+          alt="product image"
+          class="w-full h-[300px] object-cover p-4"
+        />
       </div>
       <div class="col-span-12 md:col-span-8 p-4">
         <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
           {{ product.name }}
         </h5>
-        <p class="font-normal text-gray-700 dark:text-gray-400">
+        <p class="font-normal text-gray-700 dark:text-gray-400 line-clamp-4">
           {{ product.description }}
         </p>
-        <p class="font-bold text-gray-700 dark:text-gray-400">price : {{ product.price }}</p>
+        <p class="font-bold text-lg text-gray-700 dark:text-gray-400 mt-4">
+          Price : {{ product.price }}
+        </p>
         <div class="flex flex-wrap items-center gap-2">
           <FwbButton
             color="alternative"
@@ -41,6 +47,6 @@ const props = defineProps({
   },
 })
 const onProductClick = () => {
-  router.push({ name: 'productDetail', query: { id: props.product.id } })
+  router.push({ name: 'productDetail', query: { slug: props.product.slug } })
 }
 </script>

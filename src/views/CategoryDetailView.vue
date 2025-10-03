@@ -8,9 +8,9 @@
           alt="category image"
         />
       </div>
-      <div class="col-span-12 md:col-span-8">
+      <div class="col-span-12 md:col-span-8 p-4">
         <h2 class="text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
-          {{ categoryDetails.name }}
+          {{ categoryDetails?.name }}
         </h2>
       </div>
     </div>
@@ -23,36 +23,28 @@
 </template>
 
 <script setup>
-import { onMounted } from 'vue'
-import { ref } from 'vue'
+import { computed, onMounted } from 'vue'
 import { useRoute } from 'vue-router'
 import { FwbCard } from 'flowbite-vue'
 import { useCategoryStore } from '@/stores/category'
-import { useProductStore } from '@/stores/product'
 import ProductCard from '@/components/ProductCard.vue'
 
 const route = useRoute()
 
 const categoryStore = useCategoryStore()
-const productStore = useProductStore()
 
-const categoryDetails = ref({})
-const products = ref([])
+const products = computed(() => categoryStore.productsByCategoryId)
+const categoryDetails = computed(() => categoryStore.categoryDetails)
 
 const fetchCategoryDetails = async () => {
-  categoryDetails.value = categoryStore.categories.find(
-    (category) => category.id == route.query.slug,
-  )
+  await categoryStore.fetchCategoryDetails(route.query.slug)
 }
-const fetchProductByCategorySlug = async () => {
-  products.value = productStore.products.filter(
-    (product) => product.category_id == route.query.slug,
-  )
-  console.log(products.value)
+const fetchProductByCategoryId = async () => {
+  await categoryStore.fetchProductsByCategoryId(categoryDetails.value.id)
 }
 
 onMounted(async () => {
   await fetchCategoryDetails()
-  await fetchProductByCategorySlug()
+  await fetchProductByCategoryId()
 })
 </script>

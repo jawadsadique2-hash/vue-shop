@@ -4,11 +4,14 @@
   >
     <!-- Product Image -->
     <div class="col-span-12 md:col-span-6">
-      <img
-        :src="productDetail?.image"
-        alt="product image"
-        class="w-full h-[400px] object-cover rounded-lg shadow-md transition-transform duration-300 hover:scale-105"
-      />
+      <!-- <fwb-carousel :pictures="pictures" /> -->
+      <img :src="productDetail?.images?.[0]" alt="" />
+      <FwbButton
+        @click="addToCart"
+        class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-6 rounded-lg shadow-md transition-all duration-200 w-full"
+      >
+        Add to Cart
+      </FwbButton>
     </div>
 
     <!-- Product Info -->
@@ -30,42 +33,27 @@
           <p class="text-xl font-semibold text-gray-900 dark:text-white">
             Price: ${{ productDetail?.price }}
           </p>
-          <p class="text-lg text-gray-600 dark:text-gray-400">
-            Quantity: {{ productDetail?.quantity }}
-          </p>
         </div>
       </div>
-
-      <!-- Action Button -->
-      <FwbButton
-        @click="addToCart"
-        class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-6 rounded-lg shadow-md transition-all duration-200"
-      >
-        Add to Cart
-      </FwbButton>
     </div>
   </div>
 </template>
 
 <script setup>
-import { onMounted, ref } from 'vue'
+import { onMounted, computed } from 'vue'
 import { useRoute } from 'vue-router'
 import { useCartStore } from '@/stores/cart'
 import { useProductStore } from '@/stores/product'
-import { useCategoryStore } from '@/stores/category'
 import { FwbButton } from 'flowbite-vue'
 
 const route = useRoute()
-const productDetail = ref({})
 const cartStore = useCartStore()
 const productStore = useProductStore()
-const categoryStore = useCategoryStore()
+
+const productDetail = computed(() => productStore.productDetail)
 
 const fetchProductDetail = async () => {
-  productDetail.value = productStore.products.find((product) => product.id == route.query.id)
-  productDetail.value.category = categoryStore.categories.find(
-    (category) => category.id == productDetail.value.category_id,
-  )
+  await productStore.fetchProductDetailBySlug(route.query.slug)
 }
 
 const addToCart = () => {

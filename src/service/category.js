@@ -1,5 +1,5 @@
 import { supabase } from './supabaseClient'
-import { CATEGORY_TABLE } from './tables'
+import { CATEGORY_TABLE, PRODUCT_TABLE } from './tables'
 
 export async function getAllCategories() {
   const { data, error } = await supabase.from(CATEGORY_TABLE).select('*')
@@ -29,12 +29,18 @@ export async function deleteCategory(category) {
   return data
 }
 
-export async function getCategoryBySlug(category) {
+export async function getCategoryBySlug(slug) {
+  const { data, error } = await supabase.from(CATEGORY_TABLE).select('*').eq('slug', slug).single()
+
+  if (error) throw error
+  return data
+}
+
+export async function getProductByCategoryId(categoryId) {
   const { data, error } = await supabase
-    .from(CATEGORY_TABLE)
+    .from(PRODUCT_TABLE)
     .select('*')
-    .eq('slug', category.slug)
-    .single()
+    .eq('category', categoryId)
 
   if (error) throw error
   return data

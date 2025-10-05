@@ -1,68 +1,52 @@
 import { supabase } from './supabaseClient'
 import { FILE_STORAGE } from './tables'
 
-// --- 1. Get all files from category folder ---
-export async function getAllCategoryFiles() {
-  const { data, error } = await supabase.storage.from(FILE_STORAGE).list('category')
+const sanitizeFileName = (file) => {
+  const originalName = file.name
+  const lastDotIndex = originalName.lastIndexOf('.')
 
-  if (error) throw error
-  return data
+  // Split name and extension
+  const namePart = lastDotIndex !== -1 ? originalName.slice(0, lastDotIndex) : originalName
+  const extension = lastDotIndex !== -1 ? originalName.slice(lastDotIndex) : ''
+
+  // Sanitize name
+  const sanitizedName = namePart
+    .trim() // Remove leading/trailing spaces
+    .replace(/\s+/g, '-') // Replace spaces with dashes
+    .replace(/[\/\\?%*:|"<>]/g, '') // Remove unsafe characters
+
+  return sanitizedName + extension
 }
 
-// --- 2. Get all files from product folder ---
-export async function getAllProductFiles() {
-  const { data, error } = await supabase.storage.from(FILE_STORAGE).list('product')
+export async function getAllFiles(folderName) {
+  const { data, error } = await supabase.storage.from(FILE_STORAGE).list(folderName)
 
   if (error) throw error
-  return data
+
+  // Map each file to include its public URL
+  const filesWithUrls = data
+    .filter((file) => file.name !== '.emptyFolderPlaceholder') // skip placeholder
+    .map((file) => ({
+      ...file,
+      publicUrl: supabase.storage.from(FILE_STORAGE).getPublicUrl(`${folderName}/${file.name}`).data
+        .publicUrl,
+    }))
+
+  return filesWithUrls
 }
 
-// --- 3. Upload file to category folder ---
-export async function uploadCategoryFile(file) {
+export async function uploadFile(file, folderName) {
   const { data, error } = await supabase.storage
     .from(FILE_STORAGE)
-    .upload(`category/${file.name}`, file, { upsert: true })
+    .upload(`${folderName}/${sanitizeFileName(file)}`, file, { upsert: true })
 
   if (error) throw error
   return data
 }
 
-// --- 4. Upload file to product folder ---
-export async function uploadProductFile(file) {
-  const { data, error } = await supabase.storage
-    .from(FILE_STORAGE)
-    .upload(`product/${file.name}`, file, { upsert: true })
-
-  if (error) throw error
-  return data
-}
-
-// --- 5. Delete file from category folder ---
-export async function deleteCategoryFile(fileName) {
-  const { error } = await supabase.storage.from(FILE_STORAGE).remove([`category/${fileName}`])
+export async function deleteFile(fileName, folderName) {
+  const { error } = await supabase.storage.from(FILE_STORAGE).remove([`${folderName}/${fileName}`])
 
   if (error) throw error
   return true
-}
-
-// --- 6. Delete file from product folder ---
-export async function deleteProductFile(fileName) {
-  const { error } = await supabase.storage.from(FILE_STORAGE).remove([`product/${fileName}`])
-
-  if (error) throw error
-  return true
-}
-
-// --- 7. Get public URL from category folder ---
-export function getCategoryFileUrl(fileName) {
-  const { data } = supabase.storage.from(FILE_STORAGE).getPublicUrl(`category/${fileName}`)
-
-  return data.publicUrl
-}
-
-// --- 8. Get public URL from product folder ---
-export function getProductFileUrl(fileName) {
-  const { data } = supabase.storage.from(FILE_STORAGE).getPublicUrl(`product/${fileName}`)
-
-  return data.publicUrl
 }

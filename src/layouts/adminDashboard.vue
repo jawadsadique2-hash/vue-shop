@@ -23,15 +23,21 @@
 </template>
 <script setup>
 import { useUserStore } from '@/stores/user'
-import { useRouter } from 'vue-router'
-const router = useRouter()
-const userStore = useUserStore()
 import { FwbButton } from 'flowbite-vue'
+
+const userStore = useUserStore()
 const sidebarItems = [
   {
     title: 'Dashboard',
-    icon: 'home',
     link: '/dashboard/admin-dashboard',
+  },
+  {
+    title: 'Category Images',
+    link: '/dashboard/admin-category-images',
+  },
+  {
+    title: 'Product Images',
+    link: '/dashboard/admin-product-images',
   },
 
   {
@@ -57,6 +63,5 @@ const sidebarItems = [
 ]
 const onLogout = async () => {
   await userStore.logout()
-  
 }
 </script>

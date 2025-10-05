@@ -62,6 +62,16 @@ const router = createRouter({
           name: 'dashboardCategory',
           component: () => import('../views/dashboard/DashboardCategory.vue'),
         },
+        {
+          path: 'admin-category-images',
+          name: 'adminCategoryImages',
+          component: () => import('../views/dashboard/DashboardCategoryImage.vue'),
+        },
+        {
+          path: 'admin-product-images',
+          name: 'adminProductImages',
+          component: () => import('../views/dashboard/DashboardProductImage.vue'),
+        },
       ],
     },
   ],
@@ -69,6 +79,7 @@ const router = createRouter({
 
 router.beforeEach(async (to, from, next) => {
   const userStore = useUserStore()
+
   if (!userStore.isLoggedIn) {
     await userStore.fetchSession()
   }

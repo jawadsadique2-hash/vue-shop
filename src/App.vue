@@ -4,7 +4,7 @@
     <RouterView />
   </div>
   <div class="fixed top-5 right-5 z-50">
-    <fwb-toast v-if="appStore.isToastVisible" closable  :type="appStore.toastType">
+    <fwb-toast v-if="appStore.isToastVisible" closable :type="appStore.toastType">
       {{ appStore.toastMessage }}
     </fwb-toast>
   </div>

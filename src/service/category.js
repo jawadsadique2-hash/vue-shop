@@ -15,8 +15,8 @@ export async function insertCategory(category) {
   return data
 }
 
-export async function updateCategory(category) {
-  const { data, error } = await supabase.from(CATEGORY_TABLE).update([category])
+export async function updateCategory(id, category) {
+  const { data, error } = await supabase.from(CATEGORY_TABLE).update([category]).eq('id', id)
 
   if (error) throw error
   return data
@@ -37,10 +37,7 @@ export async function getCategoryBySlug(slug) {
 }
 
 export async function getProductByCategoryId(categoryId) {
-  const { data, error } = await supabase
-    .from(PRODUCT_TABLE)
-    .select('*')
-    .eq('category', categoryId)
+  const { data, error } = await supabase.from(PRODUCT_TABLE).select('*').eq('category', categoryId)
 
   if (error) throw error
   return data

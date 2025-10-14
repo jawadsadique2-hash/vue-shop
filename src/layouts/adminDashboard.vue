@@ -45,11 +45,11 @@ const sidebarItems = [
     icon: 'list',
     link: '/dashboard/category',
   },
-  //   {
-  //     title: 'Products',
-  //     icon: 'box',
-  //     link: '/dashboard/products',
-  //   },
+     {
+       title: 'Products',
+       icon: 'box',
+       link: '/dashboard/admin-product',
+     },
   //   {
   //     title: 'Orders',
   //     icon: 'shopping-cart',

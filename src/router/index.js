@@ -72,6 +72,11 @@ const router = createRouter({
           name: 'adminProductImages',
           component: () => import('../views/dashboard/DashboardProductImage.vue'),
         },
+                {
+          path: 'admin-product',
+          name: 'adminProcduct',
+          component: () => import('../views/dashboard/DashboardProduct.vue'),
+        },
       ],
     },
   ],

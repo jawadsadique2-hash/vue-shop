@@ -15,8 +15,8 @@ export async function insertProduct(product) {
   return data
 }
 
-export async function updateProduct(product) {
-  const { data, error } = await supabase.from(PRODUCT_TABLE).update([product])
+export async function updateProduct(id,product) {
+  const { data, error } = await supabase.from(PRODUCT_TABLE).update([product]).eq('id', id)
 
   if (error) throw error
   return data
